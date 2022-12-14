@@ -51,7 +51,9 @@ getUserXhr.onreadystatechange = function () {
     userDetail = response;
     if (response.accountNonLocked == false) {
       if (response.active == false) {
-        location.replace(`/get-started.html?status=verify&useremail=${response.email}`);
+        location.replace(
+          `/get-started.html?status=verify&useremail=${response.email}`
+        );
       } else {
         location.replace(`/address.html?email=${response.email}`);
       }
@@ -78,7 +80,9 @@ paymentInfoSelection(document.getElementById("usd-info"));
 document.body.addEventListener("input", function (e) {
   if (
     withdrawEtx.value <= userDetail.account.accountBalance &&
-    withdrawEtx.value.length != 0 && userDetail.account.accountBalance > 500 && hasInvestment == false
+    withdrawEtx.value.length != 0 &&
+    userDetail.account.accountBalance > 500 &&
+    hasInvestment == false
   ) {
     withdrawBtn.classList.replace(
       "blue-background-inactive",
@@ -134,7 +138,7 @@ document.body.addEventListener("click", function (e) {
     targetId == "refer-a-friend" ||
     targetId == "refer-a-friend-mobile"
   ) {
-    //    document.getElementById("refer-modal").style.display = "block";
+    document.getElementById("refer-modal").style.display = "block";
   } else if (targetId == "close-refer-modal") {
     document.getElementById("refer-modal").style.display = "none";
   } else if (targetId == "contact-support-borrow") {
@@ -227,16 +231,13 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("crypto-deposit-option").style.display = "none";
     document.getElementById("select-crypto").textContent = "USD Token (USDT)";
     paymentInfoSelection(document.getElementById("usdt-info"));
-    
-  }
-  else if (e.target.id == "xpr") {
+  } else if (e.target.id == "xpr") {
     document.getElementById("fund-heading").textContent =
       "XPR Deposit (BEP 20)";
     document.getElementById("crypto-deposit-option").style.display = "none";
     document.getElementById("select-crypto").textContent = "XPR Token (XPR)";
     paymentInfoSelection(document.getElementById("xpr-info"));
-  }
-   else if (e.target.id == "apply-for-loan") {
+  } else if (e.target.id == "apply-for-loan") {
     tidioChatApi.open();
   } else if (e.target.id == "loan-history") {
     tidioChatApi.open();
@@ -270,11 +271,14 @@ document.body.addEventListener("click", function (e) {
     e.target.id == "open-trade-room-modal-2" ||
     e.target.id == "open-trade-room-modal-3"
   ) {
-//    document.getElementById("trade-room-modal").style.display = "block";
-	location.href = `./trading-room.html?email=${userEmail}`
+    //    document.getElementById("trade-room-modal").style.display = "block";
+    location.href = `./trading-room.html?email=${userEmail}`;
   } else if (e.target.id == "close-trade-room-modal") {
     document.getElementById("trade-room-modal").style.display = "none";
-  } else if (e.target.id == "open-trade-history-modal" || e.target.id == "open-trade-history-modal-2") {
+  } else if (
+    e.target.id == "open-trade-history-modal" ||
+    e.target.id == "open-trade-history-modal-2"
+  ) {
     document.getElementById("trade-history-room-modal").style.display = "block";
   } else if (e.target.id == "close-trade-history-modal") {
     document.getElementById("trade-history-room-modal").style.display = "none";
@@ -289,31 +293,36 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("add-wallet-modal").style.display = "none";
   } else if (e.target.id == "save-wallet") {
     saveWallet();
-  }
-  else if (e.target.id == "select-crypto-wallet") {
-	console.log("Selected")
+  } else if (e.target.id == "select-crypto-wallet") {
+    console.log("Selected");
     document.getElementById("add-wallet-modal").style.display = "block";
-  }
-  else if (e.target.id == "open-invest-modal-1" || e.target.id == "open-invest-modal-2") {
-	console.log("Yeah")
+  } else if (
+    e.target.id == "open-invest-modal-1" ||
+    e.target.id == "open-invest-modal-2"
+  ) {
+    console.log("Yeah");
     document.getElementById("investment-plan-modal").style.display = "block";
+  } else if (e.target.id == "select-wire-payment") {
+    tidioChatApi.open();
+  } else if (e.target.id == "copy-referral") {
+    // e.target.previousElementSibling.select()
+    // e.target.previousElementSibling.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(e.target.previousElementSibling.innerText);
   }
-  else if (e.target.id == "select-wire-payment") {
-	tidioChatApi.open();
-}
 });
 
 if (hasStatus) {
-	document.getElementById("fund-modal").style.display = "block";
+  document.getElementById("fund-modal").style.display = "block";
 }
 
 function saveWallet() {
-	let walletName = document.getElementById("choose-crypto").value;
-	let walletAddress = document.getElementById("wallet-address").value;
-	
-	document.getElementById("select-crypto-wallet").innerText = `${walletName} - ${walletAddress}`
-	document.getElementById("add-wallet-modal").style.display = "none";
-	
+  let walletName = document.getElementById("choose-crypto").value;
+  let walletAddress = document.getElementById("wallet-address").value;
+
+  document.getElementById(
+    "select-crypto-wallet"
+  ).innerText = `${walletName} - ${walletAddress}`;
+  document.getElementById("add-wallet-modal").style.display = "none";
 }
 
 function withdraw() {
@@ -348,7 +357,6 @@ function showWithdrawalOTP() {
   document.getElementById("otp-container").style.display = "block";
 }
 
-
 function paymentInfoSelection(info) {
   paymentInfos.forEach(function (item) {
     item.style.display = "none";
@@ -366,7 +374,7 @@ function getCryptoUpdate() {
   cryptoUpdateXhr.send();
 
   cryptoUpdateXhr.onreadystatechange = function () {
-//    document.getElementById("crypto-root").innerHTML = "";
+    //    document.getElementById("crypto-root").innerHTML = "";
     if (this.readyState == 4 && this.status == 200) {
       let response = JSON.parse(this.response);
       response.forEach(function (crypto) {
@@ -403,14 +411,14 @@ function getCryptoUpdate() {
           plus = "+";
           direction = "up";
         }
-//        document.getElementById("crypto-root").innerHTML += displayCryptoUpdate(
-//          crypto,
-//          color,
-//          plus,
-//          direction
-//        );
-//        document.getElementById("crypto-root-mobile").innerHTML +=
-//          displayCryptoUpdateMobile(crypto, color, plus, direction);
+        //        document.getElementById("crypto-root").innerHTML += displayCryptoUpdate(
+        //          crypto,
+        //          color,
+        //          plus,
+        //          direction
+        //        );
+        //        document.getElementById("crypto-root-mobile").innerHTML +=
+        //          displayCryptoUpdateMobile(crypto, color, plus, direction);
       });
     }
   };
@@ -462,8 +470,8 @@ function getAccount() {
         );
         document.getElementById("paid-interest").textContent = (0).toFixed(1);
       } else {
-	console.log(response.active)
-	hasInvestment = response.active;
+        console.log(response.active);
+        hasInvestment = response.active;
         document.getElementById("interest-account").innerText =
           response.investedAmount.toFixed(1);
         let startTime = moment(response.startDate);
@@ -474,9 +482,7 @@ function getAccount() {
         let expectedAmount;
 
         totalTime = endTime.diff(startTime, "hours");
-        expectedAmount =
-          (response.investedAmount * response.percentage) / 100;
-          
+        expectedAmount = (response.investedAmount * response.percentage) / 100;
 
         if (endTime.diff(currentTime, "minutes") <= 0) {
           document.getElementById("payment-percent").style.width = `${100}%`;
@@ -485,23 +491,28 @@ function getAccount() {
           );
           document.getElementById("paid-interest").textContent =
             expectedAmount.toFixed(2);
-          document.getElementById("interest-account").innerText = (expectedAmount + account.accountBalance).toFixed(1);
-			
+          document.getElementById("interest-account").innerText = (
+            expectedAmount + account.accountBalance
+          ).toFixed(1);
+
           investmentComplete(response.investmentId, expectedAmount);
         } else {
           let currentPercent = (100 * elapsedTime) / totalTime;
 
-		  console.log("expected amount", expectedAmount);
-		  console.log("elapsed time", elapsedTime);
-		  console.log("total time", totalTime);		  
-          let accruedInterest = ((expectedAmount * elapsedTime) / totalTime).toFixed(2);
+          console.log("expected amount", expectedAmount);
+          console.log("elapsed time", elapsedTime);
+          console.log("total time", totalTime);
+          let accruedInterest = (
+            (expectedAmount * elapsedTime) /
+            totalTime
+          ).toFixed(2);
           console.log(accruedInterest);
           document.getElementById(
             "payment-percent"
           ).style.width = `${currentPercent}%`;
 
           document.getElementById("accrued-interest").textContent =
-            accruedInterest
+            accruedInterest;
           document.getElementById("paid-interest").textContent = (0).toFixed(1);
         }
       }
@@ -566,6 +577,8 @@ function getUserAddress() {
 }
 
 function setUserDetailsSetting(userDetails) {
+  document.getElementById("referral-id").innerText =
+    userDetails.user.referralId;
   console.log(userDetails);
   settingsSpinner.style.display = "none";
   document.getElementById("profile-options").style.display = "block";
@@ -659,16 +672,14 @@ function getCryptos() {
     if (this.readyState == 4 && this.status == 200) {
       let response = JSON.parse(this.response);
       console.log(response);
-      response.forEach(function(item, index) {
-		if (index == 0) {
-			
-		}
-		else {
-			document.getElementById("choose-crypto").innerHTML += bindChooseCrypto(item);
-		}
-		
-	   })
-       
+      response.forEach(function (item, index) {
+        if (index == 0) {
+        } else {
+          document.getElementById("choose-crypto").innerHTML +=
+            bindChooseCrypto(item);
+        }
+      });
+
       cryptos = response;
     }
   };
@@ -772,7 +783,7 @@ function bindWithdrawal(withdrawal, index) {
 }
 
 function bindWallet(wallet, index) {
-    return `
+  return `
     <div class="w3-row w3-padding-large w3-round" style="margin-top: 24px; background-color: rgb(248, 248, 248);">
                   <div class="w3-col s1">
                     ${index}.
@@ -790,11 +801,11 @@ function bindWallet(wallet, index) {
                     <span class="fa fa-times w3-text-red w3-center"></span>
                   </div>
                 </div>
-    `
+    `;
 }
 
 function bindWithdrawalHeaderRoot() {
-	return `
+  return `
 	<div class="w3-row w3-padding-large"
 								style="margin-top: 24px;">
 								<div class="w3-col s1">
@@ -817,11 +828,11 @@ function bindWithdrawalHeaderRoot() {
 
 								</div>
 							</div>
-	`
+	`;
 }
 
 function bindWalletHeaderRoot() {
-	return `
+  return `
 		<div class="w3-row w3-padding-large"
 							style="margin-top: 24px;">
 							<div class="w3-col s1">
@@ -837,11 +848,11 @@ function bindWalletHeaderRoot() {
 							</div>
 
 						</div>
-	`
+	`;
 }
 
 function bindChooseCrypto(crypto) {
-	return `
+  return `
 	<option value="${crypto.crypto}">${crypto.crypto}</option>
-	`
+	`;
 }
