@@ -41,7 +41,7 @@ public class UserService {
 		}
 		String randomCode = RandomString.make(6);
 		user.setVerificationCode(randomCode);
-		user.setReferralId(user.getFullName().split(" ", 1) + "-" + RandomString.make(6));
+		user.setReferralId(user.getFullName().trim() + "-" + RandomString.make(6));
 		if (user.getReferral() != null) {
 			User userReferral = userRepository.findByReferralId(user.getReferral().getReferralId());
 			if (userReferral != null) {
