@@ -50,8 +50,14 @@ public class InvestmentService {
 		}
 
 	}
+	
+	public boolean cancelInvestment(int investmentId) {
+		Optional<Investment> investment = investmentRepository.findById(investmentId);
+		investmentRepository.save(investment.get());
+		return investment.get().isActive();
+	}
 
-	public Optional<Investment> getInvestmentByAccount(@PathVariable int accountId) {
+	public Optional<Investment> getInvestmentByAccount(int accountId) {
 		return investmentRepository.findByAccountAccountId(accountId);
 	}
 

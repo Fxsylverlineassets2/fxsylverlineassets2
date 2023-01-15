@@ -38,7 +38,7 @@ getCryptoUpdate();
 let isSettingsOpened = false;
 let isAppSetingsOpened;
 
-let canWithdraw;
+let canWithdrawn = true;
 
 let getUserXhr = new XMLHttpRequest();
 getUserXhr.open("GET", `/user/email/${userEmail}`, true);

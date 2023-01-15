@@ -25,10 +25,6 @@ public class InvestmentController {
 		return investmentService.addInvestment(investment);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/investment")
-	public Investment updateInvestment(@RequestBody Investment investment) {
-		return investmentService.addInvestment(investment);
-	}
 	
 	@RequestMapping("/investment/{investmentId}")
 	public Optional<Investment> getInvestment(@PathVariable int investmentId) {
@@ -41,9 +37,8 @@ public class InvestmentController {
 	}
 	
 	@RequestMapping("/investment/{investmentId}/isactive")
-	public boolean isActive(@PathVariable int investmentId) {
-		Optional<Investment> investment = investmentService.getInvestMent(investmentId);
-		return investment.get().isActive();
+	public boolean cancelInvestment(@PathVariable int investmentId) {
+		return investmentService.cancelInvestment(investmentId);
 	}
 	
 	@RequestMapping("/investment/{investmentId}/roi/{roi}")
