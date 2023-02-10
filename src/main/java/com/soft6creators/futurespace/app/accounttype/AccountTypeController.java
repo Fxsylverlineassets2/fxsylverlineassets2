@@ -22,7 +22,7 @@ public class AccountTypeController {
 	}
 	
 	@CrossOrigin(maxAge = 3600)
-	@RequestMapping(method = RequestMethod.POST, value = "accounttypes")
+	@RequestMapping(method = RequestMethod.POST, value = "/accounttypes")
 	public List<AccountType> addAccountTypes(@RequestBody List<AccountType> accountTypes) {
 		return accountTypeService.addAccountTypes(accountTypes);
 	}
