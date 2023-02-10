@@ -190,5 +190,9 @@ public class UserService {
 		Optional<User> user = userRepository.findByEmailAndPassword(email, password);
 		return user.get();
 	}
+	
+	public User updateUser(User user) {
+		return userRepository.save(user);
+	}
 
 }

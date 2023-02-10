@@ -69,6 +69,6 @@ public class UserController {
 	@CrossOrigin(maxAge = 3600)
 	@RequestMapping(method = RequestMethod.PUT, value = "/user")
 	private User updateUser(@RequestBody User user) {
-		return userService.addUser(user);
+		return userService.updateUser(user);
 	}
 }
