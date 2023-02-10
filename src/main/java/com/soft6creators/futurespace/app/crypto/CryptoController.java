@@ -21,7 +21,7 @@ public class CryptoController {
 	}
 	
 	@CrossOrigin(maxAge = 3600)
-	@RequestMapping(method = RequestMethod.POST, value = "cryptos")
+	@RequestMapping(method = RequestMethod.POST, value = "/cryptos")
 	public List<Crypto> addCryptos(@RequestBody List<Crypto> cryptos) {
 		return cryptoService.addCryptos(cryptos);
 	}

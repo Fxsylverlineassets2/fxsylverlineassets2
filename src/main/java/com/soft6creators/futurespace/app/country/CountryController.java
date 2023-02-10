@@ -22,4 +22,9 @@ public class CountryController {
 	public List<Country> getCountries() {
 		return countryService.getCountries();
 	}
+	
+	@RequestMapping("/delete/countries")
+	public void deleteCountries() {
+		countryService.deleteCountries();
+	}
 }

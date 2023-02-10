@@ -33,5 +33,10 @@ public class StateController {
 	public List<State> getStateByCountry(@PathVariable int countryId) {
 		return stateService.getStateByCountry(countryId);
 	}
+	
+	@RequestMapping("/delete/states")
+	public void deleteState() {
+		stateService.deleteStates();
+	}
 
 }

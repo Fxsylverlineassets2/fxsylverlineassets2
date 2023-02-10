@@ -2,6 +2,8 @@ package com.soft6creators.futurespace.app.state;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class StateService {
 	
 	public List<State> getStateByCountry(int countryId) {
 		return stateRepository.findAllByCountryCountryId(countryId);
+	}
+	
+	@Transactional
+	public void deleteStates() {
+		stateRepository.deleteAll();
 	}
 
 }
