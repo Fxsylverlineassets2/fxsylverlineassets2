@@ -53,6 +53,7 @@ public class InvestmentService {
 	
 	public boolean cancelInvestment(int investmentId) {
 		Optional<Investment> investment = investmentRepository.findById(investmentId);
+		investment.get().setActive(false);
 		investmentRepository.save(investment.get());
 		return investment.get().isActive();
 	}
@@ -63,5 +64,15 @@ public class InvestmentService {
 
 	public Optional<Investment> getInvestMent(int investmentId) {
 		return investmentRepository.findById(investmentId);
+	}
+	
+	public boolean investmentComplete(int investmentId, int roi) {
+		Optional<Investment> investment = investmentRepository.findById(investmentId);
+		investment.get().setActive(false);
+		investmentRepository.save(investment.get());
+		Optional<Account> account = accountRepository.findById(investment.get().getAccount().getAccountId());
+		account.get().setAccountBalance(roi);
+		accountRepository.save(account.get());
+		return true;	
 	}
 }

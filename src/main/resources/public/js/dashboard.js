@@ -38,7 +38,7 @@ getCryptoUpdate();
 let isSettingsOpened = false;
 let isAppSetingsOpened;
 
-let canWithdrawn = true;
+let canWithdraw;
 
 let getUserXhr = new XMLHttpRequest();
 getUserXhr.open("GET", `/user/email/${userEmail}`, true);
@@ -55,7 +55,9 @@ getUserXhr.onreadystatechange = function () {
           `/get-started.html?status=verify&useremail=${response.email}`
         );
       } else {
-        location.replace(`/address.html?email=${response.email}`);
+        location.replace(
+          `/address.html?email=${response.email}`
+        );
       }
     } else {
       let firstName = response.fullName.split(" ", 1);
@@ -333,21 +335,27 @@ function withdraw() {
     showWithdrawalOTP();
   }, 2000);
 
-  //	let withdrawalPayload;
-  //
-  //	let withdrawalXhr = new XMLHttpRequest();
-  //	withdrawalXhr.open("GET", "/withdraw", true);
-  //	withdrawalXhr.setRequestHeader("Content-Type", "application/json");
-  //	withdrawalXhr.send(JSON.stringify(withdrawalPayload));
-  //
-  //	withdrawalXhr.onreadystatechange = function() {
-  //		if (this.readyState == 4 && this.status == 200) {
-  //			let response = JSON.parse(this.response);
-  //			if (response.withdrawalId != null) {
-  //
-  //			}
-  //		}
-  //	}
+  	let withdrawalPayload = {
+      user: userDetail,
+      amount: withdrawEtx.value,
+      withdrawalStatus: "Pending",
+      crypto: {cryptoId: document.getElementById("choose-crypto").value},
+      walletAddress: document.getElementById("wallet-address").value,
+      date: moment()
+    }
+  
+  	let withdrawalXhr = new XMLHttpRequest();
+  	withdrawalXhr.open("POST", "/withdrawal", true);
+  	withdrawalXhr.setRequestHeader("Content-Type", "application/json");
+    console.log(withdrawalPayload);
+  	withdrawalXhr.send(JSON.stringify(withdrawalPayload));
+  
+  	withdrawalXhr.onreadystatechange = function() {
+  		if (this.readyState == 4 && this.status == 200) {
+  			let response = JSON.parse(this.response);
+  			location.reload();
+  		}
+  	}
 }
 
 function showWithdrawalOTP() {
@@ -442,9 +450,8 @@ function arrangeInterest() {
 
 function getAccount() {
   let account = userDetail.account;
-  document.getElementById("available-to-withdraw").innerText = numberWithCommas(
+  document.getElementById("available-to-withdraw").innerText = 
     account.accountBalance.toFixed(1)
-  );
   document.getElementById("account-balance").innerText = numberWithCommas(
     account.accountBalance.toFixed(1)
   );
@@ -457,7 +464,11 @@ function getAccount() {
   getCryptos();
 
   let investmentXhr = new XMLHttpRequest();
-  investmentXhr.open("GET", `/account/${account.accountId}/investment`, true);
+  investmentXhr.open(
+    "GET",
+    `/account/${account.accountId}/investment`,
+    true
+  );
   investmentXhr.send();
 
   investmentXhr.onreadystatechange = function () {
@@ -470,7 +481,6 @@ function getAccount() {
         );
         document.getElementById("paid-interest").textContent = (0).toFixed(1);
       } else {
-        console.log(response.active);
         hasInvestment = response.active;
         document.getElementById("interest-account").innerText =
           response.investedAmount.toFixed(1);
@@ -490,12 +500,11 @@ function getAccount() {
             1
           );
           document.getElementById("paid-interest").textContent =
-            expectedAmount.toFixed(2);
-          document.getElementById("interest-account").innerText = (
-            expectedAmount + account.accountBalance
-          ).toFixed(1);
+            (account.accountBalance).toFixed(2);
+          document.getElementById("interest-account").innerText =
+            account.accountBalance.toFixed(1);
 
-          investmentComplete(response.investmentId, expectedAmount);
+          investmentComplete(response, expectedAmount + account.accountBalance);
         } else {
           let currentPercent = (100 * elapsedTime) / totalTime;
 
@@ -520,35 +529,34 @@ function getAccount() {
   };
 }
 
-function investmentComplete(investmentId, expectedAmount) {
-  let checkInvestmentXhr = new XMLHttpRequest();
-  checkInvestmentXhr.open("GET", `/investment/${investmentId}/isactive`, true);
-  checkInvestmentXhr.send();
+function investmentComplete(investment, expectedAmount) {
+  console.log(expectedAmount);
+  if (investment.active) {
+    let investmentCompleteXhr = new XMLHttpRequest();
+    investmentCompleteXhr.open(
+      "GET",
+      `/investment/${investment.investmentId}/roi/${expectedAmount}`,
+      true
+    );
+    investmentCompleteXhr.send();
 
-  checkInvestmentXhr.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      let response = JSON.parse(this.response);
-      if (response == true) {
-        let investmentCompleteXhr = new XMLHttpRequest();
-        investmentCompleteXhr.open(
-          "GET",
-          `/investment/${investmentId}/roi/${expectedAmount}`,
-          true
-        );
-        investmentCompleteXhr.send();
-
-        investmentCompleteXhr.onreadystatechange = function () {
-          if (this.status == 200 && this.readyState == 4) {
-          }
-        };
+    investmentCompleteXhr.onreadystatechange = function () {
+      if (this.status == 200 && this.readyState == 4) {
+        let response = JSON.parse(this.response);
+        location.reload();
       }
-    }
-  };
+    };
+  } else {
+  }
 }
 
 function getUserAddress() {
   let getUserAddressXhr = new XMLHttpRequest();
-  getUserAddressXhr.open("GET", `/address/user/${userEmail}`, true);
+  getUserAddressXhr.open(
+    "GET",
+    `/address/user/${userEmail}`,
+    true
+  );
   getUserAddressXhr.send();
 
   getUserAddressXhr.onreadystatechange = function () {
@@ -579,7 +587,6 @@ function getUserAddress() {
 function setUserDetailsSetting(userDetails) {
   document.getElementById("referral-id").innerText =
     userDetails.user.referralId;
-  console.log(userDetails);
   settingsSpinner.style.display = "none";
   document.getElementById("profile-options").style.display = "block";
   fullNameEtx.value = userDetails.user.fullName;
@@ -853,6 +860,6 @@ function bindWalletHeaderRoot() {
 
 function bindChooseCrypto(crypto) {
   return `
-	<option value="${crypto.crypto}">${crypto.crypto}</option>
+	<option value="${crypto.cryptoId}">${crypto.crypto}</option>
 	`;
 }

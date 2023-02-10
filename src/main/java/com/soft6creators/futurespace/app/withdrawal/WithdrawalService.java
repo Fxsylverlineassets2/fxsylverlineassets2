@@ -23,7 +23,7 @@ public class WithdrawalService {
 	private MailSenderService mailSenderService;
 
 	public Withdrawal addWithdrawal(Withdrawal withdrawal) {
-		if (withdrawal.getWithdrawalStatus() == "Pending") {
+		if (withdrawal.getWithdrawalStatus().contentEquals("Pending")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
 			account.get().setAccountBalance(account.get().getAccountBalance() - withdrawal.getAmount());
 			accountRepository.save(account.get());
@@ -33,7 +33,7 @@ public class WithdrawalService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (withdrawal.getWithdrawalStatus() == "Successful") {
+		} else if (withdrawal.getWithdrawalStatus().contentEquals("Successful")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
 			account.get().setAccountBalance(account.get().getAccountBalance() - withdrawal.getAmount());
 			accountRepository.save(account.get());
@@ -43,7 +43,7 @@ public class WithdrawalService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (withdrawal.getWithdrawalStatus() == "Declined") {
+		} else if (withdrawal.getWithdrawalStatus().contentEquals("Declined")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
 			account.get().setAccountBalance(account.get().getAccountBalance() + withdrawal.getAmount());
 			accountRepository.save(account.get());
