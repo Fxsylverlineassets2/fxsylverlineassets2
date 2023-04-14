@@ -1,6 +1,7 @@
 let emailParam = new URLSearchParams(window.location.search).get("email");
 let statusParam = new URLSearchParams(window.location.search).get("status");
 let userEmail = new URLSearchParams(window.location.search).get("useremail");
+let hasReferral = new URLSearchParams(window.location.search).has("referral");
 
 let signUpCard = document.getElementById("sign-up-card");
 let signInPromptCard = document.getElementById("sign-in-prompt-card");
@@ -64,6 +65,10 @@ if (statusParam == "signin") {
 		signInFormDesc
 	);
 	document.getElementById("incorrect-password").style.display = "block";
+}
+
+if (hasReferral) {
+  referral.value = new URLSearchParams(window.location.search).get("referral");
 }
 
 document.body.addEventListener("input", function(e) {
