@@ -1054,13 +1054,17 @@ function bindUserStatus(email, fullName, message, date) {
 }
 
 function bindWithdrawalStatus(email, fullName, amount, date) {
+  let color = "blue-text"
+  if (date.includes("declined")) {
+    color = "w3-text-red"
+  }
   return `
 	<div class="w3-white w3-animate-opacity">
 		<div
     class="w3-row w3-padding-large pointer"
     
   >
-	<input type="hidden" value=${email} />
+	<input type="hidden" value=${withdrawalId} />
     <div class="w3-col s2" style="position: relative">
       <img
         src="./images/user.png"
@@ -1072,13 +1076,13 @@ function bindWithdrawalStatus(email, fullName, amount, date) {
     <div class="w3-col s5">
 		<div class="w3-left">
 			<p class="no-margin small user-withdrawal">${fullName}</p>
-      		<p class="no-margin small w3-text-green" style="font-weight: 600">
+      		<p class="no-margin small ${color}" style="font-weight: 600">
         	Amount: $${amount}
       		</p>
 		</div>
     </div>
     <div class="w3-col s5">
-    <p class="no-margin small w3-padding-left blue-text-dash">
+    <p class="no-margin small w3-padding-left ${color}">
     ${date}
     </p>
     </div>
