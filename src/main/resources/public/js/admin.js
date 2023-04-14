@@ -418,6 +418,7 @@ function getPendingWithdrawals() {
       response.forEach(function (item) {
         document.getElementById("distinct-message-root").innerHTML +=
           bindWithdrawalStatus(
+            item.withdrawalId,
             item.user.email,
             item.user.fullName,
             item.amount,
@@ -463,6 +464,7 @@ function getSuccessfulWithdrawals() {
       response.forEach(function (item) {
         document.getElementById("distinct-message-root").innerHTML +=
           bindWithdrawalStatus(
+            item.withdrawalId,
             item.user.email,
             item.user.fullName,
             item.amount,
@@ -485,6 +487,7 @@ function getDeclinedWithdrawals() {
       response.forEach(function (item) {
         document.getElementById("distinct-message-root").innerHTML +=
           bindWithdrawalStatus(
+            item.withdrawalId,
             item.user.email,
             item.user.fullName,
             item.amount,
@@ -1053,7 +1056,7 @@ function bindUserStatus(email, fullName, message, date) {
 	</div>`;
 }
 
-function bindWithdrawalStatus(email, fullName, amount, date) {
+function bindWithdrawalStatus(withdrawalId, email, fullName, amount, date) {
   let color = "blue-text"
   if (date.includes("declined")) {
     color = "w3-text-red"
