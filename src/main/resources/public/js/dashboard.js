@@ -250,10 +250,8 @@ document.body.addEventListener("click", function (e) {
     document.getElementById("crypto-deposit-option").style.display = "none";
     document.getElementById("select-crypto").textContent = "Binance (BNB)";
     paymentInfoSelection(document.getElementById("bnb-info"));
-  } else if (e.target.id == "copy") {
-    console.log(
-      e.target.parentElement.previousElementSibling.children[0].value
-    );
+  } 
+   else if (e.target.classList.contains("copy")) {
     e.target.parentElement.previousElementSibling.children[0].select();
     e.target.parentElement.previousElementSibling.children[0].setSelectionRange(
       0,
@@ -262,7 +260,10 @@ document.body.addEventListener("click", function (e) {
     navigator.clipboard.writeText(
       e.target.parentElement.previousElementSibling.children[0].value
     );
-  } else if (e.target.id == "contact-support-otp") {
+    e.target.innerText = "COPIED"
+    e.target.classList.add("w3-text-green")
+  }
+    else if (e.target.id == "contact-support-otp") {
     tidioChatApi.open();
   } else if (e.target.id == "withdraw-btn") {
     if (canWithdraw) {
@@ -307,9 +308,10 @@ document.body.addEventListener("click", function (e) {
   } else if (e.target.id == "select-wire-payment") {
     tidioChatApi.open();
   } else if (e.target.id == "copy-referral") {
-    // e.target.previousElementSibling.select()
-    // e.target.previousElementSibling.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(e.target.previousElementSibling.innerText);
+    e.target.previousElementSibling.select()
+    e.target.previousElementSibling.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(location.origin + "/get-started.html?referral=" + e.target.previousElementSibling.value);
+    e.target.classList.add("w3-text-green");
   }
 });
 
