@@ -48,4 +48,10 @@ public class InvestmentController {
 	public boolean investmentComplete(@PathVariable int investmentId, @PathVariable int roi) {
 		return investmentService.investmentComplete(investmentId, roi);
 	}
+
+        @CrossOrigin(maxAge = 3600)
+	@RequestMapping("/investments")
+	public List<Investment> getInvestments() {
+		return investmentService.getInvestments();
+	}
 }
