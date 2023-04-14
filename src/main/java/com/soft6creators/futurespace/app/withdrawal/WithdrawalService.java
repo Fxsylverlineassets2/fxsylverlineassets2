@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.soft6creators.futurespace.app.account.Account;
 import com.soft6creators.futurespace.app.account.AccountRepository;
+import com.soft6creators.futurespace.app.crypto.Crypto;
+import com.soft6creators.futurespace.app.crypto.CryptoRepository;
 import com.soft6creators.futurespace.app.mailsender.MailSenderService;
 
 @Service
@@ -21,6 +23,9 @@ public class WithdrawalService {
 	private AccountRepository accountRepository;
 	@Autowired
 	private MailSenderService mailSenderService;
+
+        @Autowired
+	private CryptoRepository cryptoRepository;
 
         private String email = "jessicahayes675@gmail.com";
 
