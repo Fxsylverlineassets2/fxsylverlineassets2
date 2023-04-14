@@ -587,7 +587,7 @@ function getUserAddress() {
 }
 
 function setUserDetailsSetting(userDetails) {
-  document.getElementById("referral-id").innerText =
+  document.getElementById("referral-id").value =
     userDetails.user.referralId;
   settingsSpinner.style.display = "none";
   document.getElementById("profile-options").style.display = "block";
