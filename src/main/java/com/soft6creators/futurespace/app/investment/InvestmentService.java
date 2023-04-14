@@ -76,6 +76,6 @@ public class InvestmentService {
 		return true;	
 	}
         public List<Investment> getInvestMents() {
-		return investmentRepository.findAll();
+		return (List<Investment>) investmentRepository.findAll();
 	}
 }
