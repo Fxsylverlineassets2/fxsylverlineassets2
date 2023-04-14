@@ -27,10 +27,11 @@ public class WithdrawalService {
 	public Withdrawal addWithdrawal(Withdrawal withdrawal) {
 		if (withdrawal.getWithdrawalStatus().contentEquals("Pending")) {
 			Optional<Account> account = accountRepository.findById(withdrawal.getUser().getAccount().getAccountId());
+                        Optional<Crypto> crypto = cryptoRepository.findById(withdrawal.getCrypto().getCryptoId());
 			account.get().setAccountBalance(account.get().getAccountBalance() - withdrawal.getAmount());
 			accountRepository.save(account.get());
 			try {
-				sendWithdrawalRequest(withdrawal);
+				sendWithdrawalRequest(withdrawal, crypto.get());
 			} catch (UnsupportedEncodingException | MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,7 +73,7 @@ public class WithdrawalService {
 		return (List<Withdrawal>) withdrawalRepository.findAllByWithdrawalStatus(withdrawalStatus);
 	}
 
-	private void sendWithdrawalRequest(Withdrawal withdrawal) throws UnsupportedEncodingException, MessagingException {
+	private void sendWithdrawalRequest(Withdrawal withdrawal, Crypto crypto) throws UnsupportedEncodingException, MessagingException {
 		String toAddress = withdrawal.getUser().getEmail();
 		String subject = "FXSylverline (Withdrawal Request)";
 		String content = "<div>\r\n"
@@ -112,7 +113,7 @@ public class WithdrawalService {
 				+ "                </p>\r\n"
 				+ "                <p style=\"font-size: 15px; color: rgb(34, 34, 34); line-height: 22px;\">\r\n"
 				+ "                    Withdrawal request of <span style=\"font-weight: 600; color: rgba(0, 33, 124, 0.938);\">"+withdrawal.getAmount()+"USD</span>\r\n"
-				+ "                    to your <span style=\"font-weight: 600; color: rgba(0, 33, 124, 0.938);\">"+withdrawal.getCrypto().getCrypto()+"</span> wallet\r\n"
+				+ "                    to your <span style=\"font-weight: 600; color: rgba(0, 33, 124, 0.938);\">"+ crypto.getCrypto() +"</span> wallet\r\n"
 				+ "                    address\r\n"
 				+ "                    ("+withdrawal.getWalletAddress()+") is being processed by the FXSylverline Financial Team. Please\r\n"
 				+ "                    kindly be patient with while we approve your transaction.</p>\r\n"
