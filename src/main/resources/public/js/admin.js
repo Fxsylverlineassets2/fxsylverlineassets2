@@ -408,7 +408,7 @@ function getAllUsers() {
 
 function getPendingWithdrawals() {
   let withdrawalXhr = new XMLHttpRequest();
-  withdrawalXhr.open("GET", `/withdrawals/pending`, true);
+  withdrawalXhr.open("GET", `/withdrawals/Pending`, true);
   withdrawalXhr.send();
 
   withdrawalXhr.onreadystatechange = function () {
