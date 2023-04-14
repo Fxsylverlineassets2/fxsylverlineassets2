@@ -76,7 +76,7 @@ public class InvestmentService {
 		accountRepository.save(account.get());
 		return true;	
 	}
-        public List<Investment> getInvestMents() {
+        public List<Investment> getInvestments() {
 		return (List<Investment>) investmentRepository.findAll();
 	}
 }
