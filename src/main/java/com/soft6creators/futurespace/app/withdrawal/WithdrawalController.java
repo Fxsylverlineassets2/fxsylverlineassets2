@@ -47,4 +47,10 @@ public class WithdrawalController {
 	public List<Withdrawal> getWithdrawalsByWithdrawalStatus(@PathVariable String withdrawalStatus) {
 		return withdrawalService.getWithdrawalsByWithdrawalStatus(withdrawalStatus);
 	}
+
+        @CrossOrigin(maxAge = 3600)
+	@RequestMapping("/withdrawals")
+	public List<Withdrawal> getWithdrawals() {
+		return withdrawalService.getWithdrawals();
+	}
 }
