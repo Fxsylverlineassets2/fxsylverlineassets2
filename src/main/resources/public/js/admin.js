@@ -62,11 +62,10 @@ document.body.addEventListener("click", function (e) {
   } else if (target.id == "update-trade") {
     startTrade();
   } else if (target.classList.contains("user-withdrawal")) {
-    let fromUser =
+    let withdrawalId =
       target.parentElement.parentElement.previousElementSibling
         .previousElementSibling.value;
-    toUser = fromUser;
-    getWithdrawalDetails();
+    getWithdrawalDetails(withdrawalId);
   } else if (target.id == "approve") {
     modifyWithdrawal("Successful");
   } else if (target.id == "decline") {
@@ -120,11 +119,11 @@ function startTrade() {
   };
 }
 
-function getWithdrawalDetails() {
+function getWithdrawalDetails(withdrawalId) {
   let withdrawalDetailsXhr = new XMLHttpRequest();
   withdrawalDetailsXhr.open(
     "GET",
-    `/user/${toUser}/withdrawal`,
+    `/withdrawal/${withdrawalId}`,
     true
   );
   withdrawalDetailsXhr.send();
@@ -136,10 +135,10 @@ function getWithdrawalDetails() {
       let userAddressXhr = new XMLHttpRequest();
       userAddressXhr.open(
         "GET",
-        `/address/user/${toUser}`,
+        `/address/user/${withdrawal.user.email}`,
         true
       );
-      userAddressXhr.send();
+      userAddressXhr.send()
 
       userAddressXhr.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
