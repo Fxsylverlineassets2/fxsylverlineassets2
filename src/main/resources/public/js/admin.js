@@ -14,6 +14,14 @@ let lastSeen = document.getElementById("last-seen");
 
 let days;
 
+let el = document.createElement('div');
+document.body.appendChild(el);
+
+eruda.init({
+    container: el,
+    tool: ['console', 'elements']
+});
+
 document.body.addEventListener("click", function (e) {
   let target = e.target;
   if (target.classList.contains("user")) {
